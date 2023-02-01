@@ -80,7 +80,7 @@ class Ecomm_order:
             raise
 
 # usage: 
-# python3 Ecomm_order.py ecomm-order-table "2013-07-05 00:00:00" "2013-07-05 01:00:00" ./order_all.csv
+# python3 Ecomm_order.py ecomm-order-table "2013-07-02 00:00:00" "2013-07-03 00:00:00" ./order_all.csv
 
 if __name__ == '__main__':
     if len(sys.argv) != 5:
