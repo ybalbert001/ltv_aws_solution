@@ -100,10 +100,11 @@ if __name__ == '__main__':
         with open(inputfile, 'r') as data_file:
             idx = 0
             for line in data_file:
-                if idx % 1000 == 0:
+                if idx % 5000 == 0:
                     print("{} - {}".format(idx,line))
                 uid, chain, dept, category, company, brand, productsize, productmeasure, purchasequantity, purchaseamount, date, order_time = line.split(',')
                 if order_time > start_time and order_time < end_time:
                     ecomm_order.add_order(uid, chain, dept, category, company, brand, productsize, productmeasure, purchasequantity, purchaseamount, date, order_time)
-                else 
+                else: 
                     break
+                idx += 1
