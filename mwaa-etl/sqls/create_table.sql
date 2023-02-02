@@ -113,7 +113,45 @@ CREATE TABLE IF NOT EXISTS ltv_eval_result (
 DISTSTYLE KEY 
 SORTKEY ( id );
 
-CREATE TABLE IF NOT EXISTS ltv_realtime_result (
+CREATE TABLE IF NOT EXISTS ltv_real_infer_feature (
+    id bigint ENCODE az64,
+    historical_day_cnt int8,
+    historical_order_cnt int8,
+    historical_order_amount float8,
+    historical_agv_amount_per_order float8,
+    historical_std_amount_per_order float8,
+    historical_max_amount_per_order float8,
+    historical_orderday_cnt int8,
+    historical_agv_order_per_orderday int8,
+    historical_std_order_per_orderday float8,
+    historical_agv_amount_per_orderday float8,
+    historical_std_amount_per_orderday float8,
+    historical_max_amount_per_day float8,
+    avg_day_interval int8,
+    std_day_interval float8,
+    monthly_day_cnt int8,
+    monthly_order_cnt int8,
+    monthly_order_amount float8,
+    monthly_agv_amount_per_order float8,
+    monthly_std_amount_per_order float8,
+    monthly_max_amount_per_order float8,
+    monthly_orderday_cnt int8,
+    monthly_agv_order_per_orderday int8,
+    monthly_std_order_per_orderday float8,
+    monthly_agv_amount_per_orderday float8,
+    monthly_std_amount_per_orderday float8,
+    monthly_max_amount_per_day float8,
+    ltv7 float8,
+    ltv14 float8,
+    ltv30 float8,
+    order_time timestamp without time zone,
+    slice character varying(16383) ENCODE raw distkey
+)
+DISTSTYLE KEY 
+SORTKEY ( id );
+
+
+CREATE TABLE IF NOT EXISTS ltv_real_infer_result (
     id bigint ENCODE az64,
     classification_model_predict double precision ENCODE raw,
     regression_model_predict double precision ENCODE raw,
