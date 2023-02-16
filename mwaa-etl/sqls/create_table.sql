@@ -144,7 +144,7 @@ CREATE TABLE IF NOT EXISTS ltv_real_infer_feature (
     ltv7 float8,
     ltv14 float8,
     ltv30 float8,
-    order_time timestamp without time zone,
+    lastest_order_time timestamp without time zone,
     slice character varying(16383) ENCODE raw distkey
 )
 DISTSTYLE KEY 
@@ -153,7 +153,7 @@ SORTKEY ( id );
 
 CREATE TABLE IF NOT EXISTS ltv_real_infer_result (
     id bigint ENCODE az64,
-    classification_model_predict double precision ENCODE raw,
+    classification_model_predict character varying(16383) ENCODE raw,
     regression_model_predict double precision ENCODE raw,
     slice character varying(16383) ENCODE raw distkey
 )
