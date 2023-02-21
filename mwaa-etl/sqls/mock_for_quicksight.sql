@@ -63,7 +63,7 @@ select 31 as idx, '澳门' as province
 create table ltv_user_profile as 
 select a.id, b.ca_channel, c.phone_brand, d.province from
 (select id, floor(random()*5) as channel_id, floor(random()*6) as phone_idx, floor(random()*32) as province_idx 
-from dev.googledata.googleecomm group by id) a 
+from dev.ecomm_data.googleecomm group by id) a 
 join ca_channel b 
 on a.channel_id = b.idx 
 join phone_brand c  

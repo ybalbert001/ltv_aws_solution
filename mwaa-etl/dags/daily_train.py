@@ -118,10 +118,10 @@ with DAG(
         sql=get_sql_content('wmaa/sqls/daily_update_regression_model.sql', 'ltv-poc')
     )
 
-    wait_for_while = BashOperator(
-        task_id="wait_5400s",
-        bash_command="sleep 5400",
-    )
+    # wait_for_while = BashOperator(
+    #     task_id="wait_5400s",
+    #     bash_command="sleep 5400",
+    # )
 
     wait_for_model = PythonSensor(
         task_id='wait_model_training',
