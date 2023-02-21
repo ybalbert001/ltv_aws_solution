@@ -80,7 +80,7 @@ class Ecomm_order:
             raise
 
 # usage: 
-# python3 Ecomm_order.py ecomm-order-table "2013-07-02 00:00:00" "2013-07-03 00:00:00" ./order_all.csv
+# nohup python3 Ecomm_order.py ecomm-order-table "2013-07-02 00:00:00" "2013-07-03 00:00:00" ./order_all.csv &
 
 if __name__ == '__main__':
     if len(sys.argv) != 5:
@@ -100,11 +100,14 @@ if __name__ == '__main__':
         with open(inputfile, 'r') as data_file:
             idx = 0
             for line in data_file:
-                if idx % 5000 == 0:
-                    print("{} - {}".format(idx,line))
                 uid, chain, dept, category, company, brand, productsize, productmeasure, purchasequantity, purchaseamount, date, order_time = line.split(',')
                 if order_time > start_time and order_time < end_time:
+                    if idx % 100 == 0:
+                        print("{} - {}".format(idx,line))
                     ecomm_order.add_order(uid, chain, dept, category, company, brand, productsize, productmeasure, purchasequantity, purchaseamount, date, order_time)
-                else: 
-                    break
-                idx += 1
+                    idx += 1
+                else:
+                    if order_time < start_time:
+                        continue
+                    elif order_time > end_time:
+                        break
