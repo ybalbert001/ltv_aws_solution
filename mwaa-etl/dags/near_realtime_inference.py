@@ -54,7 +54,7 @@ with DAG(
         dagrun_timeout=timedelta(hours=24),
         catchup=True,
         max_active_runs=1,
-        schedule_interval='*/5 * * * *',
+        schedule_interval='*/2 * * * *',
         tags=['redshift_sql'],
 ) as dag:
     begin = DummyOperator(task_id="begin")

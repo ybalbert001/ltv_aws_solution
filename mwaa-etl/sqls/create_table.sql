@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS ltv_offline_feature_midd_lag (
 DISTSTYLE KEY 
 SORTKEY ( id );
 
-CREATE TABLE IF NOT EXISTS ltv_offline_feature (
+CREATE TABLE IF NOT EXISTS ltv_offline_feature_1 (
     id bigint ENCODE az64,
     historical_day_cnt bigint ENCODE az64,
     historical_order_cnt bigint ENCODE az64,
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS ltv_offline_feature (
 DISTSTYLE KEY 
 SORTKEY ( id ); 
 
-CREATE TABLE IF NOT EXISTS ltv_realtime_feature (
+CREATE TABLE IF NOT EXISTS ltv_offline_feature_2 (
     id bigint ENCODE az64,
     monthly_day_cnt bigint ENCODE az64,
     monthly_order_cnt bigint ENCODE az64,
@@ -45,6 +45,18 @@ CREATE TABLE IF NOT EXISTS ltv_realtime_feature (
     ltv7 double precision ENCODE raw,
     ltv14 double precision ENCODE raw,
     ltv30 double precision ENCODE raw,
+    dt character varying(16383) ENCODE lzo distkey
+)
+DISTSTYLE KEY 
+SORTKEY ( id ); 
+
+CREATE TABLE IF NOT EXISTS ltv_realtime_feature (
+    id bigint ENCODE az64,
+    today_order_cnt bigint ENCODE az64,
+    today_order_amount double precision ENCODE raw,
+    today_agv_amount_per_order double precision ENCODE raw,
+    today_std_amount_per_order double precision ENCODE raw,
+    today_max_amount_per_order double precision ENCODE raw,
     dt character varying(16383) ENCODE lzo distkey
 )
 DISTSTYLE KEY 
@@ -89,6 +101,11 @@ CREATE TABLE IF NOT EXISTS ltv_model_dataset (
     ltv7 double precision ENCODE raw,
     ltv14 double precision ENCODE raw,
     ltv30 double precision ENCODE raw,
+    today_order_cnt bigint ENCODE az64,
+    today_order_amount double precision ENCODE raw,
+    today_agv_amount_per_order double precision ENCODE raw,
+    today_std_amount_per_order double precision ENCODE raw,
+    today_max_amount_per_order double precision ENCODE raw,
     label double precision ENCODE raw,
     dt character varying(16383) ENCODE raw distkey
 )
@@ -144,6 +161,11 @@ CREATE TABLE IF NOT EXISTS ltv_real_infer_feature (
     ltv7 float8,
     ltv14 float8,
     ltv30 float8,
+    today_order_cnt int8, 
+    today_order_amount float8, 
+    today_agv_amount_per_order float8, 
+    today_std_amount_per_order float8,
+    today_max_amount_per_order float8,
     lastest_order_time timestamp without time zone,
     slice character varying(16383) ENCODE raw distkey
 )

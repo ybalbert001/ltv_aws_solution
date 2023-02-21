@@ -5,12 +5,12 @@ select id, date, lag(date, 1) over (partition by id order by date asc) as previo
 from 
     (
         select id, date from ltv_order_existed_raw 
-        where date::DATE < ('{{ ds }}'::DATE - INTERVAL '365 day') 
+        where date::DATE <= ('{{ ds }}'::DATE - INTERVAL '365 day') 
         group by id, date
     ) t
 );
 
-insert into ltv_offline_feature
+insert into ltv_offline_feature_1
 (
 with stat_overall as (
     select id, 
@@ -20,7 +20,7 @@ with stat_overall as (
     avg(purchaseamount) as historical_agv_amount_per_order,
     stddev(purchaseamount) as historical_std_amount_per_order,
     max(purchaseamount) as historical_max_amount_per_order 
-from ltv_order_existed_raw where date::DATE < ('{{ ds }}'::DATE - INTERVAL '365 day') group by id 
+from ltv_order_existed_raw where date::DATE <= ('{{ ds }}'::DATE - INTERVAL '365 day') group by id 
 ),
 stat_by_orderday as (
     select id, 
@@ -32,7 +32,7 @@ stat_by_orderday as (
     max(amount) as historical_max_amount_per_day 
 from (
 select id, date, count(1) as order_cnt, sum(purchaseamount) as amount 
-from ltv_order_existed_raw where date::DATE < ('{{ ds }}'::DATE - INTERVAL '365 day') group by id, date 
+from ltv_order_existed_raw where date::DATE <= ('{{ ds }}'::DATE - INTERVAL '365 day') group by id, date 
 ) t group by id
 ),
 purchase_day_interval as (
@@ -41,7 +41,7 @@ purchase_day_interval as (
 select id, datediff('day', previous_date::DATE, date::DATE) as dayInterval 
 from ltv_offline_feature_midd_lag 
 where dt = '{{ ds }}' and 
-date::DATE < ('{{ ds }}'::DATE - INTERVAL '365 day') and 
+date::DATE <= ('{{ ds }}'::DATE - INTERVAL '365 day') and 
 previous_date is not NULL
 ) t group by id
 )

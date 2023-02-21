@@ -70,3 +70,11 @@ join phone_brand c
 on a.phone_idx = c.idx 
 join city_info d 
 on a.province_idx = d.idx;
+
+create view ltv_bi_source as 
+select a.*, b.two_stage_predict_val as ltv365, b.slice from ltv_user_profile a 
+join
+(
+select id, slice, EXP(case when classification_model_predict = 'onetime_buyer' then 6.0 else regression_model_predict end) as two_stage_predict_val from ltv_real_infer_result 
+) b 
+on a.id = b.id

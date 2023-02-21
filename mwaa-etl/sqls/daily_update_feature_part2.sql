@@ -1,4 +1,4 @@
-insert into ltv_realtime_feature
+insert into ltv_offline_feature_2
 (
 with stat_overall as (
     select id, 
