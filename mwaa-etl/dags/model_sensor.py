@@ -29,8 +29,8 @@ def check_model_status(model_id, cluster_name = 'redshift-cluster-4', db_name = 
 	return False
 
 def check_both_model(dt):
-	model_name = 'ltv_regression_auto_model'
-	model_id = "{}_{}".format(model_name, dt)
-	return check_model_status(model_id) and check_model_status('ltv_binary_auto_model')
+	reg_model_id = "{}_{}".format('ltv_regression_auto_model', dt)
+	bin_model_id = "{}_{}".format('ltv_binary_auto_model', dt)
+	return check_model_status(reg_model_id) and check_model_status(bin_model_id)
 
 # print(check_both_model('20130701'))
