@@ -15,7 +15,10 @@ class S3Stack(Stack):
     super().__init__(scope, construct_id, **kwargs)
 
     target_bucket_name = 'ltv-mwaa-{}'.format(resource_suffix)
-    s3_bucket = s3.Bucket(self, "CreateS3Bucket", bucket_name=target_bucket_name, block_public_access=s3.BlockPublicAccess.BLOCK_ALL, removal_policy=cdk.RemovalPolicy.DESTROY)
+    s3_bucket = s3.Bucket(self, "CreateMWAAS3Bucket", bucket_name=target_bucket_name, block_public_access=s3.BlockPublicAccess.BLOCK_ALL, removal_policy=cdk.RemovalPolicy.DESTROY)
+
+    data_bucket_name = 'ltv-data-{}'.format(resource_suffix)
+    data_s3_bucket = s3.Bucket(self, "CreateDataS3Bucket", bucket_name=data_bucket_name, block_public_access=s3.BlockPublicAccess.BLOCK_ALL, removal_policy=cdk.RemovalPolicy.DESTROY)
 
     deployment = s3deploy.BucketDeployment(self, "DeployMWAAasset",
         sources=[s3deploy.Source.asset("../mwaa-etl")],
@@ -29,5 +32,7 @@ class S3Stack(Stack):
     # })
 
     self.s3_bucket = s3_bucket
+    self.data_s3_bucket = data_s3_bucket
 
     cdk.CfnOutput(self, 'Mwaa-S3', value=s3_bucket.bucket_name, export_name='Mwaa-S3')
+    cdk.CfnOutput(self, 'Data-S3', value=data_s3_bucket.bucket_name, export_name='Data-S3')
