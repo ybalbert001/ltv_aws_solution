@@ -122,8 +122,8 @@ DISTSTYLE KEY;
 
 CREATE TABLE IF NOT EXISTS ltv_eval_result (
     id bigint ENCODE az64,
-    classification_model_predict character varying(16383) ENCODE raw,
-    regression_model_predict double precision ENCODE raw,
+    regression_model_predict_v1 double precision ENCODE raw,
+    regression_model_predict_v2 double precision ENCODE raw,
     label double precision ENCODE raw,
     dt character varying(16383) ENCODE raw distkey
 )
@@ -175,8 +175,8 @@ SORTKEY ( id );
 
 CREATE TABLE IF NOT EXISTS ltv_real_infer_result (
     id bigint ENCODE az64,
-    classification_model_predict character varying(16383) ENCODE raw,
-    regression_model_predict double precision ENCODE raw,
+    regression_model_predict_v1 double precision ENCODE raw,
+    regression_model_predict_v2 double precision ENCODE raw,
     slice character varying(16383) ENCODE raw distkey
 )
 DISTSTYLE KEY 

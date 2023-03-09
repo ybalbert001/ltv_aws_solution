@@ -1,7 +1,7 @@
 import boto3
 import time
 
-def check_model_status(model_id, cluster_name = 'redshift-cluster-4', db_name = 'dev', db_user='awsuser'):
+def check_model_status(model_id, cluster_name = 'redshift-001', db_name = 'dev', db_user='workshop-user'):
 	redshift_client = boto3.client("redshift-data")
 	mid_result = redshift_client.execute_statement(
 		ClusterIdentifier = cluster_name,
@@ -29,8 +29,8 @@ def check_model_status(model_id, cluster_name = 'redshift-cluster-4', db_name = 
 	return False
 
 def check_both_model(dt):
-	reg_model_id = "{}_{}".format('ltv_regression_auto_model', dt)
-	bin_model_id = "{}_{}".format('ltv_binary_auto_model', dt)
-	return check_model_status(reg_model_id) and check_model_status(bin_model_id)
+	model_id_1 = "{}_{}".format('ltv_regression_auto_model_v1', dt)
+	model_id_2 = "{}_{}".format('ltv_regression_auto_model_v2', dt)
+	return check_model_status(model_id_1) and check_model_status(model_id_2)
 
 # print(check_both_model('20130701'))
