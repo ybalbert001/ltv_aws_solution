@@ -157,13 +157,13 @@ class MwaaStack(Stack):
       name=MY_MWAA_ENV_NAME,
       airflow_configuration_options=mwaa_conf_options,
       airflow_version="2.2.2", #XXX: Valid values=[2.0.2, 1.10.12]
-      dag_s3_path="mwaa-etl/dags",
+      dag_s3_path="dags",
       environment_class="mw1.large", #XXX: Valid values=[mw1.small, mw1.medium, mw1.large]
       execution_role_arn= mwaa_execution_role.role_arn,
       logging_configuration=mwaa_logging_conf,
       max_workers=10,
       min_workers=1,
-      requirements_s3_path="mwaa-etl/requirements/requirements.txt",
+      requirements_s3_path="requirements/requirements.txt",
       network_configuration=mwaa_network_conf,
       source_bucket_arn=s3_bucket.bucket_arn,
       #tags={"env": "staging", "service": "airflow"}, #XXX: https://github.com/aws/aws-cdk/issues/13772
