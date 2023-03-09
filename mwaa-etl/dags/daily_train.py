@@ -49,8 +49,8 @@ def remove_comments(sqls):
 def get_sql_content(key, bucket_name, role_arn=""):
     sqls = get_object(key, bucket_name)
     _sql = remove_comments(sqls)
-    sql_list = _sql.replace("\n", "").split(";")
-    sql_list_trim = [ sql.format(bucket_name=bucket_name, iam_role_arn=role_arn).strip() for sql in sql_list if sql.strip() != ""]
+    sql_list = _sql.replace("\n", "").replace("BUCKET_NAME", sql_bucket).replace("REDSHIFT_ROLE", role_arn).split(";")
+    sql_list_trim = [ sql.strip() for sql in sql_list if sql.strip() != ""]
     return list(map(lambda x: x + ";", sql_list_trim))
 
 with DAG(
