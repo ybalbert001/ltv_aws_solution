@@ -25,10 +25,10 @@ today_max_amount_per_order) as regression_model_predict_v2, label, '{{ ds }}' as
 
 insert into ltv_model_evaluation 
 (
-predict_regression_eval as (
+with predict_regression_eval as (
     select 
     avg(abs(predict_val_v1 - label)) as v1_mae, 
-    avg(abs(predict_val_v1 - label)/predict_val_v2) as v1_mape, 
+    avg(abs(predict_val_v1 - label)/predict_val_v1) as v1_mape, 
     avg(abs(predict_val_v2 - label)) as v2_mae, 
     avg(abs(predict_val_v2 - label)/predict_val_v2) as v2_mape 
     from 
@@ -39,7 +39,7 @@ predict_regression_eval as (
 select 'All' as eval_target, 'v1_mae' as metric_name, v1_mae as metric_val, '{{ ds }}' as dt from predict_regression_eval 
 union all 
 select 'All' as eval_target, 'v1_mape' as metric_name, v1_mape as metric_val, '{{ ds }}' as dt from predict_regression_eval 
-union all
+union all 
 select 'All' as eval_target, 'v2_mae' as metric_name, v2_mae as metric_val, '{{ ds }}' as dt from predict_regression_eval 
 union all 
 select 'All' as eval_target, 'v2_mape' as metric_name, v2_mape as metric_val, '{{ ds }}' as dt from predict_regression_eval 
