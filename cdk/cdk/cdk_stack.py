@@ -47,7 +47,7 @@ class CdkStack(Stack):
         read_from_kds_policy = iam.PolicyDocument()
         read_from_kds_policy.add_statements(iam.PolicyStatement(**{
             "effect": iam.Effect.ALLOW,
-            "resources": [ f'arn:aws:kinesis:{cdk.Aws.REGION}:{cdk.Aws.ACCOUNT_ID}:stream/{KINESIS_STREAM_NAME.value_as_string}'],
+            "resources": [ f'arn:aws:kinesis:{cdk.Aws.REGION}:{cdk.Aws.ACCOUNT_ID}:stream/*'],
             "actions": [ 
                 "kinesis:DescribeStreamSummary",
                 "kinesis:GetShardIterator",
@@ -58,7 +58,7 @@ class CdkStack(Stack):
 
         read_from_kds_policy.add_statements(iam.PolicyStatement(**{
             "effect": iam.Effect.ALLOW,
-            "resources": [ f'arn:aws:kinesis:{cdk.Aws.REGION}:{cdk.Aws.ACCOUNT_ID}:stream/*'],
+            "resources": [ "*" ],
             "actions": [ 
                 "kinesis:ListStreams",
                 "kinesis:ListShards"
