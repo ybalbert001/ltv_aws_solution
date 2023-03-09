@@ -52,10 +52,32 @@ class VpcStack(Stack):
 
         vpc = aws_ec2.Vpc.from_lookup(self, "GetDefaultVPC", is_default=True)
 
-        cfn_vPCPeering_connection = aws_ec2.CfnVPCPeeringConnection(self, "MyCfnVPCPeeringConnection",
+        vpc_peering = aws_ec2.CfnVPCPeeringConnection(self, "MyCfnVPCPeeringConnection",
             peer_vpc_id=mwaa_vpc.vpc_id,
             vpc_id=vpc.vpc_id,
         )
+        
+        default_route_ids = list(set([ subnet.route_table.route_table_id for subnet in vpc.public_subnets ]))
+        mwaa_route_ids = list(set([ subnet.route_table.route_table_id for subnet in mwaa_vpc.public_subnets ]))
+
+        route_id = 0
+        for routetable_id in default_route_ids:
+          route_id += 1
+          aws_ec2.CfnRoute(self, 
+            "PeeringRouteNumber-{}".format(route_id), 
+            destination_cidr_block="10.192.0.0/16",
+            route_table_id=routetable_id,
+            vpc_peering_connection_id=vpc_peering.ref,
+          )
+
+        for routetable_id in mwaa_route_ids:
+          route_id += 1
+          aws_ec2.CfnRoute(self, 
+            "PeeringRouteNumber-{}".format(route_id), 
+            destination_cidr_block=vpc.vpc_cidr_block,
+            route_table_id=routetable_id,
+            vpc_peering_connection_id=vpc_peering.ref,
+          )
 
         self.mwaa_vpc = mwaa_vpc
         self.redshift_vpc = vpc
