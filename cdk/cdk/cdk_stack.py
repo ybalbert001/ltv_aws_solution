@@ -96,6 +96,8 @@ class CdkStack(Stack):
             description='security group for redshift cluster nodes',
             security_group_name='redshift-cluster-sg'
         )
+
+        sg_rs_cluster.add_ingress_rule(peer=aws_ec2.Peer.any_ipv4(), connection=ec2.Port.tcp(5439), 'for mwaa access',);
         sg_rs_cluster.add_ingress_rule(peer=sg_rs_client, connection=aws_ec2.Port.tcp(5439), description='redshift-client-sg')
         sg_rs_cluster.add_ingress_rule(peer=sg_rs_cluster, connection=aws_ec2.Port.all_tcp(), description='redshift-cluster-sg')
         cdk.Tags.of(sg_rs_cluster).add('Name', 'redshift-cluster-sg')

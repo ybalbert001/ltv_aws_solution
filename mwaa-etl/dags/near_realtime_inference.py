@@ -34,6 +34,8 @@ def get_sql_content(key, bucket_name):
 
 DAG_ID = os.path.basename(__file__).replace(".py", "")
 
+sql_bucket = Variable.get("s3_sql_bucket")
+
 default_args = {
     'owner': 'airflow',
     'depends_on_past': False,
@@ -64,13 +66,13 @@ with DAG(
     task_update_real_feature = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='update_real_feature',
-        sql=get_sql_content('wmaa/sqls/near_realtime_feature.sql', 'ltv-poc')
+        sql=get_sql_content('sqls/near_realtime_feature.sql', sql_bucket)
     )
 
     task_model_inference = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='model_inference',
-        sql=get_sql_content('wmaa/sqls/near_realtime_infer.sql', 'ltv-poc')
+        sql=get_sql_content('sqls/near_realtime_infer.sql', sql_bucket)
     )
 
     begin >> task_update_real_feature >> task_model_inference >> end

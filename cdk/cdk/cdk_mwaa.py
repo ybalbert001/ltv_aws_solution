@@ -117,7 +117,11 @@ class MwaaStack(Stack):
       path='/service-role/',
       inline_policies={
         'MWAA-Execution-Policy': mwaa_execution_policy_doc
-      }
+      },
+      managed_policies=[
+          iam.ManagedPolicy.from_aws_managed_policy_name('AmazonRedshiftFullAccess'),
+          iam.ManagedPolicy.from_aws_managed_policy_name('AmazonRedshiftDataFullAccess')
+      ]
     )
 
     #XXX: https://github.com/aws/aws-cdk/issues/3227

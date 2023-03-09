@@ -28,6 +28,8 @@ default_args = {
     'email_on_retry': False
 }
 
+sql_bucket = Variable.get("s3_sql_bucket")
+
 # get object from s3
 def get_object(key, bucket_name):
     hook = S3Hook()
@@ -67,55 +69,55 @@ with DAG(
     task_create_table = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='create_table',
-        sql=get_sql_content('wmaa/sqls/create_table.sql', 'ltv-poc')
+        sql=get_sql_content('sqls/create_table.sql', sql_bucket)
     )
 
     task_combine_data = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='combine_data',
-        sql=get_sql_content('wmaa/sqls/daily_combine_mv2table.sql', 'ltv-poc')
+        sql=get_sql_content('sqls/daily_combine_mv2table.sql', sql_bucket)
     )
 
     task_gen_feature1 = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='gen_feature1',
-        sql=get_sql_content('wmaa/sqls/daily_update_feature_part1.sql', 'ltv-poc')
+        sql=get_sql_content('sqls/daily_update_feature_part1.sql', sql_bucket)
     )
 
     task_gen_feature2 = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='gen_feature2',
-        sql=get_sql_content('wmaa/sqls/daily_update_feature_part2.sql', 'ltv-poc')
+        sql=get_sql_content('sqls/daily_update_feature_part2.sql', sql_bucket)
     )
 
     task_gen_feature3 = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='gen_feature3',
-        sql=get_sql_content('wmaa/sqls/daily_update_feature_part3.sql', 'ltv-poc')
+        sql=get_sql_content('sqls/daily_update_feature_part3.sql', sql_bucket)
     )
 
     task_gen_label = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='gen_label',
-        sql=get_sql_content('wmaa/sqls/daily_update_label.sql', 'ltv-poc')
+        sql=get_sql_content('sqls/daily_update_label.sql', sql_bucket)
     )
 
     task_gen_dataset = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='gen_dataset',
-        sql=get_sql_content('wmaa/sqls/daily_update_dataset.sql', 'ltv-poc')
+        sql=get_sql_content('sqls/daily_update_dataset.sql', sql_bucket)
     )
 
     task_gen_classification_model = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='gen_classification_model',
-        sql=get_sql_content('wmaa/sqls/daily_update_classification_model.sql', 'ltv-poc')
+        sql=get_sql_content('sqls/daily_update_classification_model.sql', sql_bucket)
     )
 
     task_gen_regression_model = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='gen_regression_model',
-        sql=get_sql_content('wmaa/sqls/daily_update_regression_model.sql', 'ltv-poc')
+        sql=get_sql_content('sqls/daily_update_regression_model.sql', sql_bucket)
     )
 
     # wait_for_while = BashOperator(
@@ -134,7 +136,7 @@ with DAG(
     task_eval_model = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='eval_model',
-        sql=get_sql_content('wmaa/sqls/daily_update_model_eval.sql', 'ltv-poc')
+        sql=get_sql_content('sqls/daily_update_model_eval.sql', sql_bucket)
     )
 
     begin >> task_create_table >> task_combine_data >> [task_gen_feature1, task_gen_feature2, task_gen_feature3, task_gen_label] >> task_gen_dataset >> [task_gen_classification_model, task_gen_regression_model] >> wait_for_model >> task_eval_model >> end
