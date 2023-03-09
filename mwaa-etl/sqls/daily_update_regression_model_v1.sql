@@ -15,7 +15,9 @@ from public.ltv_model_trainset_view where label > 0.0
     )
 TARGET label FUNCTION ml_fn_ltv_regression_predict_v1_{{ ds_nodash }} 
 IAM_ROLE '{iam_role_arn}' 
-AUTO ON 
+AUTO OFF 
+MODEL_TYPE XGBOOST 
 SETTINGS (
+  MAX_RUNTIME 1200,
   S3_BUCKET '{bucket_name}'
 );

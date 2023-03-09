@@ -14,8 +14,10 @@ today_order_amount, today_agv_amount_per_order, today_std_amount_per_order, toda
 from public.ltv_model_trainset_view where label > 0.0
     )
 TARGET label FUNCTION ml_fn_ltv_regression_predict_v2_{{ ds_nodash }} 
-IAM_ROLE '{iam_role_arn}' 
-AUTO ON 
+IAM_ROLE default 
+AUTO OFF 
+MODEL_TYPE XGBOOST 
 SETTINGS (
+  MAX_RUNTIME 1200,
   S3_BUCKET '{bucket_name}'
 );
