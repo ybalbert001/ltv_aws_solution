@@ -16,7 +16,7 @@ def lambda_handler(event, context):
       status_obj = redshift_client.describe_statement(Id = mid_result['Id'])
       if status_obj['Status'] == 'FINISHED':
         result = redshift_client.get_statement_result(Id = mid_result['Id'])
-        user_ltv_type = result['Records'][0][0]['stringValue']
+        user_ltv_type = result['Records'][0][0]['doubleValue']
         print("result: {}".format(user_ltv_type))
         break
       time.sleep(0.1)
