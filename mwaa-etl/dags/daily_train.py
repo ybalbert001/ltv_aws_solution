@@ -70,55 +70,55 @@ with DAG(
     task_create_table = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='create_table',
-        sql=get_sql_content('sqls/create_table.sql', sql_bucket)
+        sql=get_sql_content('mwaa-etl/sqls/create_table.sql', sql_bucket)
     )
 
     task_combine_data = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='combine_data',
-        sql=get_sql_content('sqls/daily_combine_mv2table.sql', sql_bucket)
+        sql=get_sql_content('mwaa-etl/sqls/daily_combine_mv2table.sql', sql_bucket)
     )
 
     task_gen_feature1 = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='gen_feature1',
-        sql=get_sql_content('sqls/daily_update_feature_part1.sql', sql_bucket)
+        sql=get_sql_content('mwaa-etl/sqls/daily_update_feature_part1.sql', sql_bucket)
     )
 
     task_gen_feature2 = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='gen_feature2',
-        sql=get_sql_content('sqls/daily_update_feature_part2.sql', sql_bucket)
+        sql=get_sql_content('mwaa-etl/sqls/daily_update_feature_part2.sql', sql_bucket)
     )
 
     task_gen_feature3 = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='gen_feature3',
-        sql=get_sql_content('sqls/daily_update_feature_part3.sql', sql_bucket)
+        sql=get_sql_content('mwaa-etl/sqls/daily_update_feature_part3.sql', sql_bucket)
     )
 
     task_gen_label = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='gen_label',
-        sql=get_sql_content('sqls/daily_update_label.sql', sql_bucket)
+        sql=get_sql_content('mwaa-etl/sqls/daily_update_label.sql', sql_bucket)
     )
 
     task_gen_dataset = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='gen_dataset',
-        sql=get_sql_content('sqls/daily_update_dataset.sql', sql_bucket)
+        sql=get_sql_content('mwaa-etl/sqls/daily_update_dataset.sql', sql_bucket)
     )
 
     task_gen_classification_model = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='gen_regression_model_v2',
-        sql=get_sql_content('sqls/daily_update_regression_model_v2.sql', sql_bucket, role_arn)
+        sql=get_sql_content('mwaa-etl/sqls/daily_update_regression_model_v2.sql', sql_bucket, role_arn)
     )
 
     task_gen_regression_model = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='gen_regression_model_v1',
-        sql=get_sql_content('sqls/daily_update_regression_model_v1.sql', sql_bucket, role_arn)
+        sql=get_sql_content('mwaa-etl/sqls/daily_update_regression_model_v1.sql', sql_bucket, role_arn)
     )
 
     # wait_for_while = BashOperator(
@@ -137,7 +137,7 @@ with DAG(
     task_eval_model = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='eval_model',
-        sql=get_sql_content('sqls/daily_update_model_eval.sql', sql_bucket)
+        sql=get_sql_content('mwaa-etl/sqls/daily_update_model_eval.sql', sql_bucket)
     )
 
     begin >> task_create_table >> task_combine_data >> [task_gen_feature1, task_gen_feature2, task_gen_feature3, task_gen_label] >> task_gen_dataset >> [task_gen_classification_model, task_gen_regression_model] >> wait_for_model >> task_eval_model >> end

@@ -66,13 +66,13 @@ with DAG(
     task_update_real_feature = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='update_real_feature',
-        sql=get_sql_content('sqls/near_realtime_feature.sql', sql_bucket)
+        sql=get_sql_content('mwaa-etl/sqls/near_realtime_feature.sql', sql_bucket)
     )
 
     task_model_inference = RedshiftSQLOperator(
         redshift_conn_id="redshift_default",
         task_id='model_inference',
-        sql=get_sql_content('sqls/near_realtime_infer.sql', sql_bucket)
+        sql=get_sql_content('mwaa-etl/sqls/near_realtime_infer.sql', sql_bucket)
     )
 
     begin >> task_update_real_feature >> task_model_inference >> end
