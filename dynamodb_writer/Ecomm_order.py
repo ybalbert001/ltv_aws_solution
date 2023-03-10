@@ -2,7 +2,6 @@ import json
 import logging
 import os
 import sys
-import requests
 from zipfile import ZipFile
 import boto3
 from boto3.dynamodb.conditions import Key
@@ -101,6 +100,7 @@ if __name__ == '__main__':
             idx = 0
             for line in data_file:
                 uid, chain, dept, category, company, brand, productsize, productmeasure, purchasequantity, purchaseamount, date, order_time = line.split(',')
+                order_time = order_time[:19]
                 if order_time > start_time and order_time < end_time:
                     if idx % 100 == 0:
                         print("{} - {}".format(idx,line))
