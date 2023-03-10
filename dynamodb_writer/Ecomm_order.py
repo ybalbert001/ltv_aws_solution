@@ -73,8 +73,8 @@ class Ecomm_order:
                     })
         except ClientError as err:
             logger.error(
-                "Couldn't add movie %s to table %s. Here's why: %s: %s",
-                title, self.table.name,
+                "Couldn't add id %s to table %s. Here's why: %s: %s",
+                uid, self.table.name,
                 err.response['Error']['Code'], err.response['Error']['Message'])
             raise
 
