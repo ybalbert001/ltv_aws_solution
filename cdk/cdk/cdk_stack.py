@@ -79,7 +79,8 @@ class CdkStack(Stack):
                 iam.ManagedPolicy.from_aws_managed_policy_name('AmazonAthenaFullAccess'),
                 iam.ManagedPolicy.from_aws_managed_policy_name('AWSGlueConsoleFullAccess'),
                 iam.ManagedPolicy.from_aws_managed_policy_name('AmazonSageMakerFullAccess'),
-                iam.ManagedPolicy.from_aws_managed_policy_name('AmazonRedshiftAllCommandsFullAccess')
+                iam.ManagedPolicy.from_aws_managed_policy_name('AmazonRedshiftAllCommandsFullAccess'),
+                iam.ManagedPolicy.from_aws_managed_policy_name('AmazonRedshiftFullAccess')
             ]
         )
 
