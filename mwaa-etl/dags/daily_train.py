@@ -60,7 +60,7 @@ with DAG(
         start_date=datetime(2013, 7, 1),
         dagrun_timeout=timedelta(hours=24),
         catchup=False,
-        schedule_interval='0 2 * * *',
+        schedule_interval=None,
         tags=['redshift_sql'],
 ) as dag:
     begin = DummyOperator(task_id="begin")
