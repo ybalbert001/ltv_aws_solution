@@ -161,8 +161,8 @@ class MwaaStack(Stack):
       environment_class="mw1.large", #XXX: Valid values=[mw1.small, mw1.medium, mw1.large]
       execution_role_arn= mwaa_execution_role.role_arn,
       logging_configuration=mwaa_logging_conf,
-      max_workers=10,
-      min_workers=1,
+      max_workers=4,
+      min_workers=4,
       network_configuration=mwaa_network_conf,
       source_bucket_arn=s3_bucket.bucket_arn,
       #tags={"env": "staging", "service": "airflow"}, #XXX: https://github.com/aws/aws-cdk/issues/13772
