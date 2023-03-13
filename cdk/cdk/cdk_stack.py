@@ -88,14 +88,14 @@ class CdkStack(Stack):
             vpc=vpc,
             allow_all_outbound=True,
             description='security group for redshift client',
-            security_group_name='redshift-client-sg'
+            security_group_name='redshift-client-sg-{}'.format(resource_suffix)
         )
 
         sg_rs_cluster = aws_ec2.SecurityGroup(self, 'RedshiftClusterSG',
             vpc=vpc,
             allow_all_outbound=True,
             description='security group for redshift cluster nodes',
-            security_group_name='redshift-cluster-sg'
+            security_group_name='redshift-cluster-sg-{}'.format(resource_suffix)
         )
 
         sg_rs_cluster.add_ingress_rule(peer=aws_ec2.Peer.any_ipv4(), connection=aws_ec2.Port.tcp(5439), description='for mwaa access',);
