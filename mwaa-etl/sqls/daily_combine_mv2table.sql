@@ -14,7 +14,7 @@ with stat_today as (
     avg(purchaseamount) as today_agv_amount_per_order,
     stddev(purchaseamount) as today_std_amount_per_order,
     max(purchaseamount) as today_max_amount_per_order 
-    from ltv_order_ingesting_mv where date = '{{ ds }}'
+    from ltv_order_ingesting_mv where date = '{{ tomorrow_ds }}'
     group by id
 )
 select a1.id, historical_day_cnt, historical_order_cnt, historical_order_amount, historical_agv_amount_per_order,
@@ -27,8 +27,8 @@ monthly_agv_order_per_orderday, monthly_std_order_per_orderday, monthly_agv_amou
 monthly_std_amount_per_orderday, monthly_max_amount_per_day, 
 ltv7, ltv14, ltv30, today_order_cnt, today_order_amount, today_agv_amount_per_order, today_std_amount_per_order,
 today_max_amount_per_order from 
-(select * from ltv_offline_feature_1 where dt = '{{ yesterday_ds }}') a1 
-left join (select * from ltv_offline_feature_2 where dt = '{{ yesterday_ds }}' ) a2 
+(select * from ltv_offline_feature_1 where dt = '{{ ds }}') a1 
+left join (select * from ltv_offline_feature_2 where dt = '{{ ds }}' ) a2 
 on a1.id = a2.id 
 left join stat_today b 
 on a1.id = b.id 
