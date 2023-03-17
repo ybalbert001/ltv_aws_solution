@@ -29,7 +29,7 @@ class CdkStack(Stack):
         
         ddb_table = ddb.Table(self, "CreateDynamoDbTable",
             table_name=target_ddb_name,
-            # removal_policy=cdk.RemovalPolicy.DESTROY,
+            removal_policy=cdk.RemovalPolicy.DESTROY,
             partition_key=ddb.Attribute(name="id",
             type=ddb.AttributeType.STRING),
             sort_key=ddb.Attribute(name="order_time",
